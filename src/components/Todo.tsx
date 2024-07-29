@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSquare, faTrash, faCheckSquare, faEdit } from '@fortawesome/free-solid-svg-icons'
+import { faSquare, faTrash, faCheckSquare, faEdit, faSave } from '@fortawesome/free-solid-svg-icons'
 import { ChangeEvent } from 'react';
 
 
@@ -8,6 +8,7 @@ type Tobe = {
     title: string;
     createdAt: Date;
     isCompleted: boolean;
+    isEditing: boolean
 }
 
 interface Props {
@@ -15,33 +16,46 @@ interface Props {
     ontoggleComplete: (id: string) => void, 
     onDelete: (id: string) => void, 
     onEdit: (id: string, newValue: string) => void, 
-    toggleEditMode: (id: string) => void, 
+    onToggleEditMode: (id: string, currentTitle: string) => void, 
+    handleEditInput: (e: ChangeEvent<HTMLInputElement>) => void, 
+    editingValue: string
 }
 
-export default function Todo({todos, ontoggleComplete, onDelete, onEdit, toggleEditMode}: Props) {
+export default function Todo({todos, ontoggleComplete, onDelete, onEdit, onToggleEditMode, editingValue, handleEditInput}: Props) {
     
-    const doing = todos.map((tada) => (
-        <li className="flex space-x-4" key={tada.id}>
-        <button className="" onClick={() => ontoggleComplete(tada.id)}>
-        <FontAwesomeIcon className={`${tada.isCompleted ? "text-green-500" : "text-gray-200"}`} icon={tada.isCompleted ? faCheckSquare : faSquare} />
+    const doing = todos.map((be) => (
+        <li className="flex space-x-4" key={be.id}>
+        <button className="" onClick={() => ontoggleComplete(be.id)}>
+        <FontAwesomeIcon className={`${be.isCompleted ? "text-green-500" : "text-gray-200"}`} icon={be.isCompleted ? faCheckSquare : faSquare} />
         </button>
-        <p className={`w-[95%] ${tada.isCompleted ? "line-through": ""}`} >{tada.title}</p>
-        <button className="">
+        {be.isEditing ? (
+            <div className="flex w-full items-center">
+              <input
+                type="text"
+                value={editingValue}
+                onChange={handleEditInput}
+                className="flex-grow mx-4 px-2 py-1 border-b-2 border-gray-300"
+              />
+              <button className="mx-4 px-2 py-1 border-b-2 border-gray-300" onClick={() => onEdit(be.id, editingValue)}>
+                <FontAwesomeIcon icon={faSave} className='text-blue-600 px-2 py-2 rounded-full bg-gray-200'/>
+              </button>
+            </div>
+          ) : (
+            <span
+              className={`mx-4 w-[85%] ${be.isCompleted ? 'line-through text-gray-500' : ''}`}
+              onClick={() => onToggleEditMode(be.id, be.title)}
+            >
+              {be.title} )
+            </span>
+          )}
+        <button className="" onClick={() => onToggleEditMode(be.id, be.title)}>
             <FontAwesomeIcon icon={faEdit} className='text-blue-600 px-2 py-2 rounded-full bg-gray-200'/>
         </button>
-        <button className="" onClick={() => onDelete(tada.id)}>
+        <button className="" onClick={() => onDelete(be.id)}>
             <FontAwesomeIcon icon={faTrash} className='text-red-600 px-2 py-2 rounded-full bg-gray-200'/>
         </button>
     </li>
     ));
-
-    const handleEditChange = (e: ChangeEvent<HTMLInputElement>, id: string) => {
-        const newValue = e.target.value;
-        onEdit(id, newValue);
-    }
-
-    
-
 
     return(
         <div className="">

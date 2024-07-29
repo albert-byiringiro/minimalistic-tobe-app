@@ -13,17 +13,25 @@ export default function App(): JSX.Element {
     title: string;
     createdAt: Date;
     isCompleted: boolean;
+    isEditing: boolean
   }
   
   const [todoInput, setTodoInput] = useState('');
   const [todos, setTodos] = useState<Tobe[]>(()=> {
     const data = localStorage.getItem("todos");
     return data ? JSON.parse(data) : [];
-  })
+  });
+  
+  const [editingValue, setEditingValue] = useState('');
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setTodoInput(e.target.value);
-  }
+  };
+
+  const handleEditInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setEditingValue(e.target.value);
+  };
+
   
   useEffect(()=>{
     // save todos to local storage whenever it changes
@@ -66,8 +74,9 @@ export default function App(): JSX.Element {
     }: doing))
   }
 
-  const toggleEditMode = (id: string) => {
-    setTodos(prevTodos => prevTodos.map(doing => doing.id === id ? {...doing, isEditing: !doing.isEditing } : doing))
+  const onToggleEditMode = (id: string, currentTitle: string) => {
+    setTodos(prevTodos => prevTodos.map(doing => doing.id === id ? {...doing, isEditing: !doing.isEditing } : doing));
+    setEditingValue(currentTitle);
   }
 
   return (
@@ -84,7 +93,9 @@ export default function App(): JSX.Element {
         ontoggleComplete={handleToggleComplete} 
         onDelete={handleDelete}
         onEdit={handleUpdate}
-        toggleEditMode={toggleEditMode}
+        onToggleEditMode={onToggleEditMode}
+        handleEditInput={handleEditInput}
+        editingValue={editingValue}
       />
     </main>
   )
