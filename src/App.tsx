@@ -41,7 +41,13 @@ export default function App(): JSX.Element {
     
   }
 
-  console.log(todos)
+  const handleToggleComplete = (id: string) => {
+    setTodos(prevTodos => {
+      return prevTodos.map(doing => doing.id === id ? {...doing, isCompleted: !doing.isCompleted} : doing)
+    })
+   
+  }
+
   return (
     <main className="mx-12">
       <h1 className="text-center text-4xl text-gray-400 font-bold my-7">Todos</h1>
@@ -51,7 +57,7 @@ export default function App(): JSX.Element {
           <FontAwesomeIcon icon={faPlusCircle} className='text-green-600 text-2xl'/>
         </button>
       </form>
-      <Todo todos={todos}/>
+      <Todo todos={todos} ontoggleComplete={handleToggleComplete}/>
     </main>
   )
 }

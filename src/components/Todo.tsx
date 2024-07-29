@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSquare, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faSquare, faTrash, faCheckSquare } from '@fortawesome/free-solid-svg-icons'
 
 
 type Tobe = {
@@ -9,20 +9,19 @@ type Tobe = {
     isCompleted: boolean;
 }
 
-export default function Todo({todos}: {todos: Tobe[]}) {
+export default function Todo({todos, ontoggleComplete}: {todos: Tobe[]}) {
+    
     const doing = todos.map((tada) => (
-        <li className="flex space-x-4" id={tada.id}>
-        <button className="">
-            <FontAwesomeIcon icon={faSquare} className='text-gray-300'/>
+        <li className="flex space-x-4" key={tada.id}>
+        <button className="" onClick={() => ontoggleComplete(tada.id)}>
+        <FontAwesomeIcon className={`${tada.isCompleted ? "text-green-500" : "text-gray-200"}`} icon={tada.isCompleted ? faCheckSquare : faSquare} />
         </button>
-        <p className="w-[95%]">{tada.title}</p>
+        <p className={`w-[95%] ${tada.isCompleted ? "line-through": ""}`} >{tada.title}</p>
         <button className="">
             <FontAwesomeIcon icon={faTrash} className='text-red-600 px-2 py-2 rounded-full bg-gray-200'/>
         </button>
     </li>
     ))
-
-    console.log(doing)
 
     return(
         <div className="">
