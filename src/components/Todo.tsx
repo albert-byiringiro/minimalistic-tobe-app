@@ -9,7 +9,13 @@ type Tobe = {
     isCompleted: boolean;
 }
 
-export default function Todo({todos, ontoggleComplete, onDelete}: {todos: Tobe[], ontoggleComplete: (id: string) => void, onDelete: (id: string) => void }) {
+interface Props {
+    todos: Tobe[], 
+    ontoggleComplete: (id: string) => void, 
+    onDelete: (id: string) => void, 
+}
+
+export default function Todo({todos, ontoggleComplete, onDelete}: Props) {
     
     const doing = todos.map((tada) => (
         <li className="flex space-x-4" key={tada.id}>

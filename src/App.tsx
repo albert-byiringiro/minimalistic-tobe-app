@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 import Todo from './components/Todo'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { nanoid } from 'nanoid';
 
 export default function App(): JSX.Element {
@@ -16,12 +16,19 @@ export default function App(): JSX.Element {
   }
   
   const [todoInput, setTodoInput] = useState('');
-  const [todos, setTodos] = useState<Tobe[]>([])
+  const [todos, setTodos] = useState<Tobe[]>(()=> {
+    const data = localStorage.getItem("todos");
+    return data ? JSON.parse(data) : [];
+  })
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     setTodoInput(e.target.value);
   }
   
+  useEffect(()=>{
+    // save todos to local storage whenever it changes
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }, [todos])
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
