@@ -28,7 +28,8 @@ export default function App(): JSX.Element {
   useEffect(()=>{
     // save todos to local storage whenever it changes
     localStorage.setItem("todos", JSON.stringify(todos))
-  }, [todos])
+  }, [todos]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -58,6 +59,17 @@ export default function App(): JSX.Element {
     setTodos(prevTodos => prevTodos.filter(doing => doing.id !== id))
   }
 
+  // update todo
+  const handleUpdate = (id: string, newValue: string) => {
+    setTodos((prevTodos) => prevTodos.map((doing) => doing.id === id ? {
+      ...doing, title: newValue, isEditing: false
+    }: doing))
+  }
+
+  const toggleEditMode = (id: string) => {
+    setTodos(prevTodos => prevTodos.map(doing => doing.id === id ? {...doing, isEditing: !doing.isEditing } : doing))
+  }
+
   return (
     <main className="mx-12">
       <h1 className="text-center text-4xl text-gray-400 font-bold my-7">Todos</h1>
@@ -67,7 +79,13 @@ export default function App(): JSX.Element {
           <FontAwesomeIcon icon={faPlusCircle} className='text-green-600 text-2xl'/>
         </button>
       </form>
-      <Todo todos={todos} ontoggleComplete={handleToggleComplete} onDelete={handleDelete}/>
+      <Todo 
+        todos={todos} 
+        ontoggleComplete={handleToggleComplete} 
+        onDelete={handleDelete}
+        onEdit={handleUpdate}
+        toggleEditMode={toggleEditMode}
+      />
     </main>
   )
 }
