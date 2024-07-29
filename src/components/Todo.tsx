@@ -9,7 +9,7 @@ type Tobe = {
     isCompleted: boolean;
 }
 
-export default function Todo({todos, ontoggleComplete}: {todos: Tobe[]}) {
+export default function Todo({todos, ontoggleComplete, onDelete}: {todos: Tobe[], ontoggleComplete: (id: string) => void, onDelete: (id: string) => void }) {
     
     const doing = todos.map((tada) => (
         <li className="flex space-x-4" key={tada.id}>
@@ -17,7 +17,7 @@ export default function Todo({todos, ontoggleComplete}: {todos: Tobe[]}) {
         <FontAwesomeIcon className={`${tada.isCompleted ? "text-green-500" : "text-gray-200"}`} icon={tada.isCompleted ? faCheckSquare : faSquare} />
         </button>
         <p className={`w-[95%] ${tada.isCompleted ? "line-through": ""}`} >{tada.title}</p>
-        <button className="">
+        <button className="" onClick={() => onDelete(tada.id)}>
             <FontAwesomeIcon icon={faTrash} className='text-red-600 px-2 py-2 rounded-full bg-gray-200'/>
         </button>
     </li>

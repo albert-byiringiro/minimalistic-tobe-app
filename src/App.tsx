@@ -45,7 +45,10 @@ export default function App(): JSX.Element {
     setTodos(prevTodos => {
       return prevTodos.map(doing => doing.id === id ? {...doing, isCompleted: !doing.isCompleted} : doing)
     })
-   
+  }
+
+  const handleDelete = (id:string) => {
+    setTodos(prevTodos => prevTodos.filter(doing => doing.id !== id))
   }
 
   return (
@@ -57,7 +60,7 @@ export default function App(): JSX.Element {
           <FontAwesomeIcon icon={faPlusCircle} className='text-green-600 text-2xl'/>
         </button>
       </form>
-      <Todo todos={todos} ontoggleComplete={handleToggleComplete}/>
+      <Todo todos={todos} ontoggleComplete={handleToggleComplete} onDelete={handleDelete}/>
     </main>
   )
 }
