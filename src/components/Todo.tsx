@@ -45,7 +45,7 @@ export default function Todo({todos, ontoggleComplete, onDelete, onEdit, onToggl
               className={`mx-4 w-[85%] ${be.isCompleted ? 'line-through text-gray-500' : ''}`}
               onClick={() => onToggleEditMode(be.id, be.title)}
             >
-              {be.title} )
+              {be.title}
             </span>
           )}
         <button className="" onClick={() => onToggleEditMode(be.id, be.title)}>

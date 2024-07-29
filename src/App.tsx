@@ -48,6 +48,7 @@ export default function App(): JSX.Element {
       title: todoInput,
       createdAt: new Date(),
       isCompleted: false,
+      isEditing: false
     }
 
     setTodos(prevTodos => [...prevTodos, newTodo]);
